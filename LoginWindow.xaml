@@ -1,0 +1,55 @@
+<Window x:Class="аудіобібліотека_голоси_природи.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Вхід" Height="500" Width="400" Background="#121212"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True">
+    <Border CornerRadius="20" Background="#121212" BorderBrush="#282828" BorderThickness="1">
+        <Grid Margin="40">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="🌿" FontSize="40" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                <TextBlock x:Name="TitleTxt" Text="Увійти" Foreground="White" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+                
+                <TextBlock Text="Логін" Foreground="White" FontSize="12" FontWeight="Bold" Margin="0,0,0,8"/>
+                <TextBox x:Name="TxtUsername" Background="#282828" Foreground="White" BorderThickness="0" Height="40" Padding="10,8" Margin="0,0,0,20">
+                    <TextBox.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="4"/></Style></TextBox.Resources>
+                </TextBox>
+
+                <TextBlock Text="Пароль" Foreground="White" FontSize="12" FontWeight="Bold" Margin="0,0,0,8"/>
+                <PasswordBox x:Name="TxtPassword" Background="#282828" Foreground="White" BorderThickness="0" Height="40" Padding="10,8" Margin="0,0,0,30">
+                    <PasswordBox.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="4"/></Style></PasswordBox.Resources>
+                </PasswordBox>
+
+                <Button x:Name="MainActionBtn" Content="УВІЙТИ" Background="#1DB954" Foreground="Black" FontWeight="Bold" Height="45" BorderThickness="0" Click="MainAction_Click" Cursor="Hand">
+                    <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="22"/></Style></Button.Resources>
+                </Button>
+
+                <Button x:Name="SwitchModeBtn" Content="Немає акаунту? Зареєструватися" Background="Transparent" Foreground="#B3B3B3" FontSize="12" Margin="0,15,0,0" BorderThickness="0" Click="SwitchMode_Click" Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <TextBlock x:Name="Txt" Text="{TemplateBinding Content}" HorizontalAlignment="Center"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Txt" Property="Foreground" Value="White"/>
+                                    <Setter TargetName="Txt" Property="TextDecorations" Value="Underline"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <Button Content="Закрити" Background="Transparent" Foreground="#404040" FontSize="11" Margin="0,20,0,0" BorderThickness="0" Click="Exit_Click" Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <TextBlock x:Name="Txt" Text="{TemplateBinding Content}" HorizontalAlignment="Center"/>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Txt" Property="Foreground" Value="#B3B3B3"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
