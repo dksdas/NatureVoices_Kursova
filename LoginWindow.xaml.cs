@@ -49,11 +49,51 @@ namespace аудіобібліотека_голоси_природи
                 MainActionBtn.Content = "УВІЙТИ";
                 SwitchModeBtn.Content = "Немає акаунту? Зареєструватися";
             }
+            else
             {
                 TitleTxt.Text = "Реєстрація";
                 MainActionBtn.Content = "СТВОРИТИ АКАУНТ";
                 SwitchModeBtn.Content = "Вже є акаунт? Увійти";
             }
+        }
+
+        /// <summary>
+        /// Відображає красиве мінімалістичне спливаюче повідомлення.
+        /// </summary>
+        private async void ShowNotification(string message, string icon = "🌿", string type = "info")
+        {
+            NotificationText.Text = message;
+            NotificationIcon.Text = icon;
+
+            if (type == "success")
+            {
+                NotificationBorder.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#1DB954"));
+                NotificationText.Foreground = System.Windows.Media.Brushes.Black;
+            }
+            else if (type == "error")
+            {
+                NotificationBorder.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#E22134"));
+                NotificationText.Foreground = System.Windows.Media.Brushes.White;
+            }
+            else // warning / info
+            {
+                NotificationBorder.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF9800"));
+                NotificationText.Foreground = System.Windows.Media.Brushes.Black;
+            }
+
+            var fadeIn = new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(250));
+            var slideDown = new System.Windows.Media.Animation.ThicknessAnimation(new Thickness(0, -40, 0, 0), new Thickness(0, 10, 0, 0), TimeSpan.FromMilliseconds(250));
+
+            NotificationBorder.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+            NotificationBorder.BeginAnimation(FrameworkElement.MarginProperty, slideDown);
+
+            await System.Threading.Tasks.Task.Delay(2500);
+
+            var fadeOut = new System.Windows.Media.Animation.DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(250));
+            var slideUp = new System.Windows.Media.Animation.ThicknessAnimation(new Thickness(0, 10, 0, 0), new Thickness(0, -40, 0, 0), TimeSpan.FromMilliseconds(250));
+
+            NotificationBorder.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+            NotificationBorder.BeginAnimation(FrameworkElement.MarginProperty, slideUp);
         }
 
         /// <summary>
@@ -63,7 +103,7 @@ namespace аудіобібліотека_голоси_природи
         {
             if (string.IsNullOrWhiteSpace(TxtUsername.Text) || string.IsNullOrWhiteSpace(TxtPassword.Password))
             {
-                MessageBox.Show("Будь ласка, заповніть логін і пароль.", "Увага", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ShowNotification("Заповніть логін і пароль!", "⚠️", "warning");
                 return;
             }
             var users = LoadUsers();
@@ -77,11 +117,11 @@ namespace аудіобібліотека_голоси_природи
                     new MainWindow(user.Username, user.Role).Show();
                     this.Close();
                 }
-                else MessageBox.Show("Невірний логін або пароль");
+                else ShowNotification("Невірний логін або пароль!", "❌", "error");
             }
             else
             {
-                if (users.Exists(u => u.Username == TxtUsername.Text)) { MessageBox.Show("Логін зайнятий"); return; }
+                if (users.Exists(u => u.Username == TxtUsername.Text)) { ShowNotification("Цей логін уже зайнятий!", "⚠️", "warning"); return; }
                 users.Add(new UserData
                 {
                     Username = TxtUsername.Text,
@@ -98,7 +138,7 @@ namespace аудіобібліотека_голоси_природи
                     }
                 }
                 catch { }
-                MessageBox.Show("Готово! Тепер увійдіть.");
+                ShowNotification("Акаунт створено! Увійдіть.", "✅", "success");
                 SwitchMode_Click(null, null);
             }
         }
